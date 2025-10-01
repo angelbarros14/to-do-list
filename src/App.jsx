@@ -26,9 +26,16 @@ const Input = ({input, onChange}) => {
   )
 }
 
-const Task = ({onChange, text}) => {
+const Task = ({onChange, text, editButton, removeButton, textChange}) => {
   return (
-      <p><input type='checkbox' onChange={onChange}/>{text}</p>
+      <div>
+        <input type='checkbox' onChange={onChange}/>
+        <input type='text' value={text} onChange={textChange}/>
+        <Button onClick={editButton} text='edit'/>
+        <Button onClick={removeButton} text='x'/>
+      </div>
+      
+      
   )
 }
 
@@ -57,10 +64,24 @@ const App = () => {
     }
 
   }
-  /* 
-  const editTask = () => 
-  const removeTask = () =>
-  */
+  
+  // const editTask = (taskId) => {
+  //   const item = tasks.find(item => item.id === taskId)
+  //   if (item) (
+
+  //   )
+  // }
+  
+  const removeTask = (taskId) => {
+    const item = tasks.find(item => item.id === taskId)
+    if (item) {
+      const updatedTask = tasks.filter(item => item.id !== taskId)
+    
+    setTasks(updatedTask)
+    }
+  }
+    
+  
 
   return (
     <div>
@@ -70,13 +91,14 @@ const App = () => {
       <Button onClick={addTask} text='+' />
       <Input input={input} onChange={(e) => setInput(e.target.value)}/>
       <Title text='TASKS' />
-      <ul>
-        {tasks.map(task => <li key={task.id}><Task onChange={() => completeTask(task.id)} text={task.text}/></li>)}
-      </ul>
+      <div>
+        {tasks.map(task => <li key={task.id}><Task onChange={() => completeTask(task.id)} text={task.text} removeButton={() => removeTask(task.id)}/></li>)}
+      </div>
       <Title text='COMPLETED TASKS' />
       <ul>
         {complete.map(task => <li key={task.id}>{task.text}</li>)}
       </ul>
+
     </div>
   )
 }
